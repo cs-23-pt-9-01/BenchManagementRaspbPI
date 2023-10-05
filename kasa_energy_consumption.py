@@ -1,6 +1,7 @@
 import asyncio
 from kasa import Discover
 from datetime import datetime
+import pandas as pd
 
 async def main():
     # Discover Kasa devices on the local network
@@ -15,7 +16,19 @@ async def main():
         print("No energy monitoring devices found.")
         return
 
-    while True:
+
+    
+    temp_list = []
+
+
+    #For testing
+    import time
+
+    n_minutes = 1 #Minutes to run
+    #end_time = time.time() + (60 * n_minutes)
+    end_time = time.time() + 5
+
+    while time.time() < end_time:
         for addr, device in energy_devices.items():
             # Update device state (this also fetches the latest energy readings)
             await device.update()
@@ -25,12 +38,20 @@ async def main():
 
             # Get current timestamp with milliseconds
             current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
-
+            
+            temp_list.append((current_time, device.alias, addr, energy_info['power'], energy_info['voltage'], energy_info['current']))
             # Print energy metrics along with the timestamp
             print(f"[{current_time}] {device.alias} at {addr} - Power: {energy_info['power']} W, Voltage: {energy_info['voltage']} V, Current: {energy_info['current']} A")
 
         # Wait for a few seconds before fetching again
         await asyncio.sleep(0.1)
+    
+    csv_df = pd.DataFrame(data=temp_list, columns=['Date','device','address','watt','voltage','current'])
+
+    print(csv_df.columns)
+
+    csv_df.to_csv(r"C:\Users\Mads\Documents\GitHub\BenchManagementRaspbPI\Data\Kasa\test.csv", index=False)
+
 
 # Run the event loop
 if __name__ == "__main__":
