@@ -1,6 +1,7 @@
 import asyncio
 from kasa import Discover
 from datetime import datetime
+import csv
 
 async def main():
     # Discover Kasa devices on the local network
@@ -8,29 +9,46 @@ async def main():
 
     # Filter out devices that don't support energy monitoring
     energy_devices = {addr: dev for addr, dev in devices.items() if dev.has_emeter}
-    
 
     # If no energy monitoring devices are found, exit
     if not energy_devices:
         print("No energy monitoring devices found.")
         return
 
-    while True:
-        for addr, device in energy_devices.items():
-            # Update device state (this also fetches the latest energy readings)
-            await device.update()
+    # Create or open a CSV file for writing
+    with open("energy_measurements.csv", "w", newline='') as csvfile:
+        fieldnames = ["timestamp", "device_alias", "address", "power_W", "voltage_V", "current_A"]
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
-            # Retrieve energy metrics
-            energy_info = device.emeter_realtime
+        # Write the header to the CSV
+        writer.writeheader()
 
-            # Get current timestamp with milliseconds
-            current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+        while True:
+            for addr, device in energy_devices.items():
+                # Update device state (this also fetches the latest energy readings)
+                await device.update()
 
-            # Print energy metrics along with the timestamp
-            print(f"[{current_time}] {device.alias} at {addr} - Power: {energy_info['power']} W, Voltage: {energy_info['voltage']} V, Current: {energy_info['current']} A")
+                # Retrieve energy metrics
+                energy_info = device.emeter_realtime
 
-        # Wait for a few seconds before fetching again
-        await asyncio.sleep(0.1)
+                # Get current timestamp with milliseconds
+                current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+
+                # Write energy metrics along with the timestamp to CSV
+                writer.writerow({
+                    "timestamp": current_time,
+                    "device_alias": device.alias,
+                    "address": addr,
+                    "power_W": energy_info['power'],
+                    "voltage_V": energy_info['voltage'],
+                    "current_A": energy_info['current']
+                })
+
+                # Optional: print to console
+                print(f"[{current_time}] {device.alias} at {addr} - Power: {energy_info['power']} W, Voltage: {energy_info['voltage']} V, Current: {energy_info['current']} A")
+
+            # Wait for a few seconds before fetching again
+            await asyncio.sleep(1)
 
 # Run the event loop
 if __name__ == "__main__":
