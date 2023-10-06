@@ -2,12 +2,12 @@ import asyncio
 from kasa import Discover
 from datetime import datetime
 import pandas as pd
-import time
 import threading
 import _thread
 
 
-temp_list = [] #Bad practise i know dont @ me
+temp_list = [] #Bad practise to use globals, i know, dont @ me
+path = r"RELATIVE_PATH_GOES_HERE\Data\Kasa\test.csv"
 
 async def main():
 
@@ -24,12 +24,7 @@ async def main():
         return
 
 
-    n_minutes = 1 #Minutes to run
-    end_time = time.time() + (60 * n_minutes)
-    #end_time = time.time() + 5
-
-    
-    while time.time() < end_time:
+    while True:
         for addr, device in energy_devices.items():
             # Update device state (this also fetches the latest energy readings)
             await device.update()
@@ -46,9 +41,6 @@ async def main():
 
         # Wait for a few seconds before fetching again
         await asyncio.sleep(0.1)
-
-    csv_df = pd.DataFrame(data=temp_list, columns=['Date','device','address','watt','voltage','current'])
-    csv_df.to_csv(r"C:\Users\Mads\Documents\GitHub\BenchManagementRaspbPI\Data\Kasa\test.csv", index=False)
 
 
 def socket_func():
@@ -73,7 +65,7 @@ def exit_func():
     
     print("Saving data and exiting")
     csv_df = pd.DataFrame(data=temp_list, columns=['Date','device','address','watt','voltage','current'])
-    csv_df.to_csv(r"C:\Users\Mads\Documents\GitHub\BenchManagementRaspbPI\Data\Kasa\test.csv", index=False)
+    csv_df.to_csv(path, index=False)
     exit()
 
 
@@ -86,7 +78,6 @@ if __name__ == "__main__":
         x.start()
 
         asyncio.run(main())
-
 
     except KeyboardInterrupt:
         exit_func()
