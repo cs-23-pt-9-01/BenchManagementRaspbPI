@@ -7,7 +7,7 @@ import _thread
 
 
 temp_list = [] #Bad practise to use globals, i know, dont @ me
-path = f"/home/seff_jr/power_plug_{datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]}.csv"
+path = f"/home/seff_jr/power_plug_{datetime.now().strftime('%H:%M:%S')}.csv"
 
 async def main():
 
