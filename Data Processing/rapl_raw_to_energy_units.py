@@ -14,10 +14,10 @@ def convert_raw_to_energy_units(raw_value, energy_status_units):
     return raw_value * energy_units
 
 def convert_dataframe(raw_df):
-    energy_units_values = [convert_raw_to_energy_units(raw, esu) for raw, esu in raw_df]
+    energy_values = [convert_raw_to_energy_units(raw, esu) for raw, esu in raw_df]
     converted_df = pd.DataFrame({
         'Time Stamp': raw_df.time_stamp, 
-        'Energy Consumption (J)': energy_status_units_values
+        'Energy Consumption (J)': energy_values
         })
     return converted_df
 
@@ -36,7 +36,7 @@ def main():
     #Load raw csv with raw msr readings
     raw_df = load_raw_values_from_csv(args.csvfile)
     
-    #Convert raw msr readings to energy values with common (useful) units
+    #Convert raw msr readings to energy values with common (useful) units (joules?)
     processed_df = convert_raw_to_energy_units(raw_df)
     
     #Save the converted dataframe to csv

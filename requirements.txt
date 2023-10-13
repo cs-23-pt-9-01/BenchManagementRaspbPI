@@ -1,2 +1,3 @@
 python-kasa
 pandas
+zmq
