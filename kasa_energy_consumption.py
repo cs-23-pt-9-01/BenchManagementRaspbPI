@@ -7,7 +7,7 @@ import _thread
 
 
 temp_list = [] #Bad practise to use globals, i know, dont @ me
-path = r"RELATIVE_PATH_GOES_HERE\Data\Kasa\test.csv"
+path = f"/home/seff_jr/power_plug_{datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]}.csv"
 
 async def main():
 
