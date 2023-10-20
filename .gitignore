@@ -2,3 +2,5 @@
 Data/Kasa/*
 Data/RAPL/*
 energy_measurements.csv
+*.csv
+*.ipynb
