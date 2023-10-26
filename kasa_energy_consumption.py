@@ -1,17 +1,16 @@
 import asyncio
 from kasa import Discover
 from datetime import datetime
+import time
 import pandas as pd
 import threading
 import _thread
+import os
 
 
-temp_list = [] #Bad practise to use globals, i know, dont @ me
-path = f"/home/seff_jr/power_plug_{datetime.now().strftime('%y:%m:%D:%H:%M:%S')}.csv"
-#path = f"/home/seff_jr/power_plug_{datetime.now().strftime('%H:%M:%S')}.csv"
+temp_list = [] #Bad practise to use globals, i know, dont @ me (MADS!!!!)
 
-
-async def main():
+async def main(path):
 
     # Discover Kasa devices on the local network
     devices = await Discover.discover()
@@ -75,11 +74,18 @@ def exit_func():
 # Run the event loop
 if __name__ == "__main__":
     
+    cwd = os.getcwd()
+    timestamp = datetime.now().timetuple()
+    unix_timestamp = int(time.mktime(timestamp))
+    file = f"power_plug_{unix_timestamp}.csv"
+
+    path = os.path.join(cwd, file)
+    
     try:
         x = threading.Thread(target=socket_func, daemon=True)
         x.start()
 
-        asyncio.run(main())
+        asyncio.run(main(path))
 
     except KeyboardInterrupt:
         exit_func()

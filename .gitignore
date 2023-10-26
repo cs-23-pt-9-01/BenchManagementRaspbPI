@@ -4,3 +4,5 @@ Data/RAPL/*
 energy_measurements.csv
 *.csv
 *.ipynb
+Data Processing/25-10-2023-data/results/simon
+Data Processing/TODO.txt
