@@ -81,7 +81,7 @@ def get_data_filepath():
     file = f"power_plug_{unix_timestamp}.csv"
 
     #return full path for file
-    return os.path.join(cwd, file)
+    return os.path.join(parent_dir, file)
 
 
     
