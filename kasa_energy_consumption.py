@@ -74,6 +74,7 @@ def exit_func():
 # Run the event loop
 if __name__ == "__main__":
     
+    #Get current working dir, and create filename using datetime.now in unix format.
     cwd = os.getcwd()
     timestamp = datetime.now().timetuple()
     unix_timestamp = int(time.mktime(timestamp))
