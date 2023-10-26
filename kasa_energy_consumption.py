@@ -70,10 +70,7 @@ def exit_func():
     exit()
 
 
-    
-# Run the event loop
-if __name__ == "__main__":
-    
+def get_data_filepath():
     #Get current working dir, and split to get parent dir (to avoid saving data to the git local repo).
     cwd = os.getcwd().split("\\")
     parent_dir = os.path.join(*cwd[:-1])
@@ -83,8 +80,15 @@ if __name__ == "__main__":
     unix_timestamp = int(time.mktime(timestamp))
     file = f"power_plug_{unix_timestamp}.csv"
 
-    #Create full path for file
-    path = os.path.join(cwd, file)
+    #return full path for file
+    return os.path.join(cwd, file)
+
+
+    
+# Run the event loop
+if __name__ == "__main__":
+    
+    path = get_data_filepath()
     
     try:
         x = threading.Thread(target=socket_func, daemon=True)
