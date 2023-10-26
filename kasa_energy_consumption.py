@@ -74,12 +74,16 @@ def exit_func():
 # Run the event loop
 if __name__ == "__main__":
     
-    #Get current working dir, and create filename using datetime.now in unix format.
-    cwd = os.getcwd()
+    #Get current working dir, and split to get parent dir (to avoid saving data to the git local repo).
+    cwd = os.getcwd().split("\\")
+    parent_dir = os.path.join(*cwd[:-1])
+
+    #Get current time and convert to unix format, then create filename with unix time
     timestamp = datetime.now().timetuple()
     unix_timestamp = int(time.mktime(timestamp))
     file = f"power_plug_{unix_timestamp}.csv"
 
+    #Create full path for file
     path = os.path.join(cwd, file)
     
     try:
