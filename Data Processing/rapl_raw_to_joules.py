@@ -10,7 +10,7 @@ def get_info_from_title(title):
 
 
 def load_raw_values_from_csv(csv_file):
-    path = f"results/{csv_file}"
+    path = f".\\results\\{csv_file}"
     return pd.read_csv(path)
 
 def mult(x, b):
@@ -40,7 +40,7 @@ def process_df(raw_df, units):
 
 
 def main():
-    processed_path = "processed"
+    processed_path = ".\\processed"
     
     if not os.path.isdir("processed"):
         os.mkdir(processed_path)
