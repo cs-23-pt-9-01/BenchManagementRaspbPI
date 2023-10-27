@@ -76,6 +76,7 @@ def get_data_filepath():
     #cwd = os.getcwd().split("\\") --> Windows
     cwd = os.getcwd().split("/") # --> Linux
     parent_dir = os.path.join("/",*cwd[:-1])
+    parent_dir = "."+parent_dir
 
     #Get current time and convert to unix format, then create filename with unix time
     timestamp = datetime.now().timetuple()
