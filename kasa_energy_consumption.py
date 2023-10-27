@@ -73,10 +73,8 @@ def exit_func(path):
 def get_data_filepath():
     #Get current working dir, and split to get parent dir (to avoid saving data to the git local repo).
     
-    #cwd = os.getcwd().split("\\") --> Windows
-    cwd = os.getcwd().split("/") # --> Linux
-    parent_dir = os.path.join("/",*cwd[:-1])
-    parent_dir = "./"
+    #cwd = os.getcwd().split("\\") --> Windows    
+    parent_dir = "./" # --> Linux
 
 
     #Get current time and convert to unix format, then create filename with unix time
