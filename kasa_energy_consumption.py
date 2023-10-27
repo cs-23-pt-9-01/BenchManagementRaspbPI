@@ -10,7 +10,7 @@ import os
 
 temp_list = [] #Bad practise to use globals, i know, dont @ me (MADS!!!!)
 
-async def main(path):
+async def main():
 
     # Discover Kasa devices on the local network
     devices = await Discover.discover()
@@ -62,7 +62,7 @@ def socket_func():
         return
 
         
-def exit_func():
+def exit_func(path):
     
     print("Saving data and exiting")
     csv_df = pd.DataFrame(data=temp_list, columns=['Date','device','address','watt','voltage','current'])
@@ -96,8 +96,8 @@ if __name__ == "__main__":
         x = threading.Thread(target=socket_func, daemon=True)
         x.start()
 
-        asyncio.run(main(path))
+        asyncio.run(main())
 
     except KeyboardInterrupt:
-        exit_func()
+        exit_func(path)
     
