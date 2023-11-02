@@ -34,11 +34,12 @@ async def main():
             energy_info = device.emeter_realtime
 
             # Get current timestamp with milliseconds
-            current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+            #current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+            current_time = time.time()
             
             temp_list.append((current_time, device.alias, addr, energy_info['power'], energy_info['voltage'], energy_info['current']))
             # Print energy metrics along with the timestamp
-            print(f"[{current_time}] {device.alias} at {addr} - Power: {energy_info['power']} W, Voltage: {energy_info['voltage']} V, Current: {energy_info['current']} A")
+            #print(f"[{current_time}] {device.alias} at {addr} - Power: {energy_info['power']} W, Voltage: {energy_info['voltage']} V, Current: {energy_info['current']} A")
 
         # Wait for a few seconds before fetching again
         await asyncio.sleep(0.1)
@@ -65,7 +66,7 @@ def socket_func():
 def exit_func(path):
     
     print("Saving data and exiting")
-    csv_df = pd.DataFrame(data=temp_list, columns=['Date','device','address','watt','voltage','current'])
+    csv_df = pd.DataFrame(data=temp_list, columns=['timestamp','device','address','watt','voltage','current'])
     csv_df.to_csv(path, index=False)
     exit()
 
