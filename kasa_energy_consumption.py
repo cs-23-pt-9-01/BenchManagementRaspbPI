@@ -2,6 +2,7 @@ import asyncio
 from kasa import Discover
 from datetime import datetime
 import csv
+import time
 
 async def main():
     # Discover Kasa devices on the local network
@@ -32,8 +33,8 @@ async def main():
                 energy_info = device.emeter_realtime
 
                 # Get current timestamp with milliseconds
-                current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
-
+                #current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+                current_time = time.time()
                 # Write energy metrics along with the timestamp to CSV
                 writer.writerow({
                     "timestamp": current_time,

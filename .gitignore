@@ -1,2 +1,6 @@
 
 energy_measurements.csv
+*.csv
+*.ipynb
+data_processing/TODO.txt
+data_processing/25-10-2023-data/results/simon
