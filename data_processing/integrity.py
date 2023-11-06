@@ -31,7 +31,7 @@ def checkIntegrity(
         min_len = 1, 
         columns = [
             "TimeStart",
-            "TimeStop",
+            "TimeEnd",
             "PP0Start" ,
             "PP0End" ,
             "PP1Start", 
