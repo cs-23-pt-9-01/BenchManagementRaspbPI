@@ -1,12 +1,13 @@
 import pandas as pd
 
+# checks the len of the dataframe
 def checkLen(df, min):
     if len(df) == 0:
         raise Exception("Empty dataframe")
     if len(df) < min:
         raise Exception("Dataframe too short")
 
-
+# Checks the types in order of columns
 def checkTypes(df, types):
     for i in range(len(df.columns)):
         if df.dtypes[i] != types[i]:
@@ -29,6 +30,8 @@ def checkIntegrity(
         df, 
         min_len = 1, 
         columns = [
+            "TimeStart",
+            "TimeStop",
             "PP0Start" ,
             "PP0End" ,
             "PP1Start", 
@@ -46,10 +49,12 @@ def checkIntegrity(
             "int64",
             "int64",
             "int64",
+            "int64",
+            "int64",
             "int64"
         ]):
     checkLen(df, min_len)
-    checkColumns(df, columns )
+    checkColumns(df, columns)
     checkTypes(df, types)
 
 # Check integrity of multiple files using checkIntegrity
@@ -66,4 +71,3 @@ def checkMultipleFiles(files):
 
 if __name__ == '__main__':
     raise Exception("This is a library, not a script")
-
