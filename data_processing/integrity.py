@@ -1,6 +1,6 @@
 import pandas as pd
 
-# checks the len of the dataframe
+# Checks the len of the dataframe
 def checkLen(df, min):
     if len(df) == 0:
         raise Exception("Empty dataframe")
