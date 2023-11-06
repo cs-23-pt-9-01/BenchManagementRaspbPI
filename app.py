@@ -35,13 +35,7 @@ def stop():
     stop_runner()
     return "<p>Stopped</p>"
 
-# measurement function
-def kasa(flag):
-    while not flag.is_set():
-        print("measureing")
-        time.sleep(1)
-
-# starting measurement in thread
+# starting measurement on a thread
 async def start_runner():
     global running
     global stop_flag
@@ -51,6 +45,7 @@ async def start_runner():
     running = True
     stop_flag = threading.Event()
     
+    # finding devices and starting measurement
     devices = await kec.find_devices()
     threading.Thread(target=kec.thread_measurement, args=(stop_flag,devices)).start()
 
