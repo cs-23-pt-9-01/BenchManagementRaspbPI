@@ -1,20 +1,20 @@
 import pandas as pd
 
 # Checks the len of the dataframe
-def checkLen(df, min):
+def check_len(df, min):
     if len(df) == 0:
         raise Exception("Empty dataframe")
     if len(df) < min:
         raise Exception("Dataframe too short")
 
 # Checks the types in order of columns
-def checkTypes(df, types):
+def check_types(df, types):
     for i in range(len(df.columns)):
         if df.dtypes[i] != types[i]:
             raise Exception("Invalid type: " + df.columns[i] + " expected: " + str(types[i]))
 
 # Check if each column exists in the dataframe
-def checkColumns(df, columns):
+def check_columns(df, columns):
     df_columns = df.columns
     for i in range(len(df_columns)):
         if not df_columns[i] == columns[i]:
@@ -26,7 +26,7 @@ def checkColumns(df, columns):
 # columns : expected columns (in order)
 # types : expected types (in order)
 # The default values are from the RAPL interface measurements
-def checkIntegrity(
+def check_integrity(
         df, 
         min_len = 1, 
         columns = [
@@ -53,17 +53,17 @@ def checkIntegrity(
             "int64",
             "int64"
         ]):
-    checkLen(df, min_len)
-    checkColumns(df, columns)
-    checkTypes(df, types)
+    check_len(df, min_len)
+    check_columns(df, columns)
+    check_types(df, types)
 
 # Check integrity of multiple files using checkIntegrity
-def checkMultipleFiles(files):
+def check_multiple_files(files):
     correct_files = []
     for file in files:
         try:
             df = pd.read_csv(file)
-            checkIntegrity(df)
+            check_integrity(df)
             correct_files.append(file)
         except Exception as e:
             print("Error in " + file + " : " + str(e))
