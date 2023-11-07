@@ -53,13 +53,17 @@ async def start_runner():
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
 
-    measurement_loop(loop, stop_flag, devices, 1)
+    timestamp = time.time()
+    filename = f"power_plug_{timestamp}.csv"
 
-def measurement_loop(loop,stop_flag, devices, sec):
+    measurement_loop(filename, loop, stop_flag, devices, 1)
+
+def measurement_loop(filename, loop,stop_flag, devices, sec):
     """
     function for running a measurement periodically
     inpsired by https://stackoverflow.com/questions/2697039/python-equivalent-of-setinterval
 
+    :param filename is the name of the file where the measurements are saved
     :param loop is a asyncio event loop, which is used for enabling threading and async io.
     :param stop_flag is a threading event, which is used to stop
     :param devices are the devices from kec.find_devices()
@@ -74,7 +78,7 @@ def measurement_loop(loop,stop_flag, devices, sec):
             return
         
         # starting timer for next measurement
-        measurement_loop(loop, stop_flag, devices, sec)
+        measurement_loop(filename, loop, stop_flag, devices, sec)
 
         # running measurement
         loop.run_until_complete(kec.measure(devices))
