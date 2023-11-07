@@ -76,7 +76,7 @@ async def measure(energy_devices, filename):
             writer.writeheader()
 
         for addr, device in energy_devices.items():
-                # Update device state (this also fetches the latest energy readings)
+                # Update device state (this also fetches the latest energy readings) (note: required to read device properties such as emeter_realtime)
                 await device.update()
 
                 # Retrieve energy metrics
