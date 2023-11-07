@@ -63,7 +63,7 @@ def runMeasurement(stop_flag,devices):
 # inpsired by https://stackoverflow.com/questions/2697039/python-equivalent-of-setinterval
 def measurement_loop(stop_flag, devices, sec):
     
-    def func_wrapper(stop_flag, devices, sec):
+    def func_wrapper():
         # stopping is flag is set
         if stop_flag.is_set():
             return
@@ -74,7 +74,7 @@ def measurement_loop(stop_flag, devices, sec):
         loop.run_until_complete(kec.measure(devices))
         loop.close()
 
-    t = threading.Timer(sec, func_wrapper, [stop_flag, devices, sec])
+    t = threading.Timer(sec, func_wrapper)
     t.start()
     return t
 
