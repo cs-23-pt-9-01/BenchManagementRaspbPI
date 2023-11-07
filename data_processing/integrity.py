@@ -7,55 +7,48 @@ def check_len(df, min):
     if len(df) < min:
         raise Exception("Dataframe too short")
 
-# Checks the types in order of columns
-def check_types(df, types):
-    for i in range(len(df.columns)):
-        if df.dtypes[i] != types[i]:
-            raise Exception("Invalid type: " + df.columns[i] + " expected: " + str(types[i]))
+# Checks the types
+# df : dataframe
+# columns : dictionary key=column, value = expected type
+# Example: {"TimeStart":"int64"}
+def check_types(df, columns):
+    for column in columns.keys():
+        if df[column].dtype != columns[column]:
+            raise Exception("Invalid type: " + df[column].dtype + "in column: " + " column" + " expected: " + columns[column])
 
 # Check if each column exists in the dataframe
 def check_columns(df, columns):
     df_columns = df.columns
-    for i in range(len(df_columns)):
-        if not df_columns[i] == columns[i]:
-            raise Exception("invalid column, expected: " + columns[i] + " got: " + df_columns[i])
+    for column in columns:
+        if column not in df_columns:
+            raise Exception("Missing column: " + column)
+
+default_input_dict = {
+    "TimeStart":"int64",
+    "TimeEnd":"int64",
+    "PP0Start":"int64",
+    "PP0End":"int64",
+    "PP1Start":"int64",
+    "PP1End":"int64",
+    "PkgStart":"int64",
+    "PkgEnd":"int64",
+    "DramStart":"int64",
+    "DramEnd":"int64"
+}
 
 # Validates the integrity of a dataframe
 # df : dataframe to be validated
 # min_len : minimum length of rows
-# columns : expected columns (in order)
-# types : expected types (in order)
+# columns : dictionary of columns and their types
 # The default values are from the RAPL interface measurements
 def check_integrity(
         df, 
         min_len = 1, 
-        columns = [
-            "TimeStart",
-            "TimeEnd",
-            "PP0Start" ,
-            "PP0End" ,
-            "PP1Start", 
-            "PP1End", 
-            "PkgStart", 
-            "PkgEnd", 
-            "DramStart", 
-            "DramEnd"
-        ], 
-        types = [
-            "int64",
-            "int64",
-            "int64",
-            "int64",
-            "int64",
-            "int64",
-            "int64",
-            "int64",
-            "int64",
-            "int64"
-        ]):
+        columns = default_input_dict
+    ):
     check_len(df, min_len)
-    check_columns(df, columns)
-    check_types(df, types)
+    check_columns(df, columns.keys())
+    check_types(df, columns)
 
 # Check integrity of multiple files using checkIntegrity
 def check_multiple_files(files):
