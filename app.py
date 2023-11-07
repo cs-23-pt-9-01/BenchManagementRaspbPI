@@ -27,12 +27,22 @@ async def start():
     global running
     if running:
         return "<p>Already started</p>"
-    await start_runner()
-    return "<p>Started</p>"
+    
+    try:
+        await start_runner()
+        return "<p>Started</p>"
+    except Exception as e:
+        print(e)
+        return "<p>Failed to start check log</p>", 500
+    
 
 # endpoint for stopping measurement
 @app.route("/stop")
 def stop():
+    global running
+    if not running:
+        return "<p>Not started, nothing to stop</p>"
+    
     stop_runner()
     return "<p>Stopped</p>"
 
@@ -42,7 +52,8 @@ async def start_runner():
     global stop_flag
 
     if running:
-        return
+        raise Exception("start_runner called twice")
+    
     running = True
     stop_flag = threading.Event()
     
