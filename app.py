@@ -2,6 +2,7 @@ from flask import Flask
 import time
 import threading
 import kasa_energy_consumption as kec
+import asyncio
 
 app = Flask(__name__)
 
@@ -47,7 +48,14 @@ async def start_runner():
     
     # finding devices and starting measurement
     devices = await kec.find_devices()
-    threading.Thread(target=kec.thread_measurement, args=(stop_flag,devices)).start()
+    threading.Thread(target=runMeasurement, args=(stop_flag,devices)).start()
+    
+# function for running measurement on a thread with asyncio
+def runMeasurement(stop_flag,devices):
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(kec.thread_measurement(stop_flag,devices))
+    loop.close()
 
 # stopping measurement by setting stopper event
 def stop_runner():
