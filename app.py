@@ -79,7 +79,7 @@ def measurement_loop(filename, loop,stop_flag, devices, sec):
     :param filename is the name of the file where the measurements are saved
     :param loop is an asyncio event loop, which is used for enabling threading and async io.
     :param stop_flag is a threading event, which is used to stop
-    :param devices are the devices from kec.find_devices()
+    :param devices are devices from kasa_energy_consumption.find_devices()
     :param  sec is the time between measurements in seconds (only seconds since powerplug measuring interval is 1 second)
     """
 
