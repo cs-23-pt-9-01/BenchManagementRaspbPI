@@ -53,7 +53,7 @@ async def start_runner():
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
 
-    measurement_loop(stop_flag, devices, 1)
+    measurement_loop(loop, stop_flag, devices, 1)
 
     #threading.Thread(target=runMeasurement, args=(stop_flag,devices)).start()
     
