@@ -57,16 +57,18 @@ async def start_runner():
     running = True
     stop_flag = threading.Event()
     
-    # finding devices and starting measurement
+    # finding devices
     devices = await kec.find_devices()
 
     # starting asyncio loop be used by measurement_loop
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
 
+    # filename for measurement
     timestamp = time.time()
     filename = f"power_plug_{timestamp}.csv"
 
+    # starting measurement
     measurement_loop(filename, loop, stop_flag, devices, 1)
 
 def measurement_loop(filename, loop,stop_flag, devices, sec):
