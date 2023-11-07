@@ -80,7 +80,7 @@ def measurement_loop(filename, loop,stop_flag, devices, sec):
     :param loop is an asyncio event loop, which is used for enabling threading and async io.
     :param stop_flag is a threading event, which is used to stop
     :param devices are the devices from kec.find_devices()
-    :param  sec is the time between measurements in seconds (only secounds because of powerplug)
+    :param  sec is the time between measurements in seconds (only seconds since powerplug measuring interval is 1 second)
     """
 
     # function wrapper to be called by timer
