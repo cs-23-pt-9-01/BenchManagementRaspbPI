@@ -65,8 +65,13 @@ async def find_devices():
     
     return energy_devices
     
-# function for taking a single for all energy_devices measurement and writing it to file
 async def measure(energy_devices, filename):
+    """
+    function for taking a single measurement
+
+    :param energy_devices are the devices from find_devices
+    :param filename is the name of the file written to
+    """
     with open(filename, "a", newline='') as csvfile:
         fieldnames = ["timestamp", "device_alias", "address", "power_W", "voltage_V", "current_A"]
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
