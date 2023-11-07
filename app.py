@@ -48,6 +48,11 @@ async def start_runner():
     
     # finding devices and starting measurement
     devices = await kec.find_devices()
+
+    # starting asyncio loop
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+
     measurement_loop(stop_flag, devices, 1)
 
     #threading.Thread(target=runMeasurement, args=(stop_flag,devices)).start()
@@ -61,19 +66,17 @@ def runMeasurement(stop_flag,devices):
 
 # function for running a measurement periodically
 # inpsired by https://stackoverflow.com/questions/2697039/python-equivalent-of-setinterval
-def measurement_loop(stop_flag, devices, sec):
+def measurement_loop(loop,stop_flag, devices, sec):
     
     def func_wrapper():
         # stopping is flag is set
         if stop_flag.is_set():
+            loop.close()
             return
         
-        measurement_loop(stop_flag, devices, sec)
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
+        measurement_loop(loop, stop_flag, devices, sec)
         loop.run_until_complete(kec.measure(devices))
-        loop.close()
-
+        
     t = threading.Timer(sec, func_wrapper)
     t.start()
     return t
