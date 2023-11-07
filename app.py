@@ -81,7 +81,7 @@ def measurement_loop(filename, loop,stop_flag, devices, sec):
         measurement_loop(filename, loop, stop_flag, devices, sec)
 
         # running measurement
-        loop.run_until_complete(kec.measure(devices))
+        loop.run_until_complete(kec.measure(devices,filename))
     
     # starting timer, that calls func_wrapper for measurement
     t = threading.Timer(sec, func_wrapper)
