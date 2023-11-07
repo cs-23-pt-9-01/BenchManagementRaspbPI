@@ -104,12 +104,13 @@ async def thread_measurement(flag, energy_devices):
     
 # function for taking a single for all energy_devices measurement and writing it to file
 async def measure(energy_devices):
-    with open("energy_measurements.csv", "w", newline='') as csvfile:
+    with open("energy_measurements.csv", "a", newline='') as csvfile:
         fieldnames = ["timestamp", "device_alias", "address", "power_W", "voltage_V", "current_A"]
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
-        # Write the header to the CSV
-        writer.writeheader()
+        if csvfile.tell() == 0:
+            # Write the header to the CSV
+            writer.writeheader()
 
         for addr, device in energy_devices.items():
                 # Update device state (this also fetches the latest energy readings)
