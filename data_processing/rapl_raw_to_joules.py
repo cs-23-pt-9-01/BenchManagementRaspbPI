@@ -13,10 +13,13 @@ def load_raw_values_from_csv(csv_file):
     path = f".\\results\\{csv_file}"
     return pd.read_csv(path)
 
+# 
 def mult(x, b):
     return x*b
 
-
+# Input: raw rapl pandas Dataframe, and energy units (int)
+# Output: Pandas Dataframe, where energy values are mutliplied with energy units, 
+#   and energy start and stop values are subtracted to for delta (energy consumption per benchmark)
 def process_df(raw_df, units):
     # Compute energy units from esu
     energy_unit = math.pow(0.5, ((units >> 8) &0x1f))
