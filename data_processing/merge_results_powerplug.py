@@ -24,7 +24,7 @@ def merge_dataframes(rapl, powerplug):
             # Get the last matching row as it's the closest to the current timestamp in rapl
             last_matching_row = matching_p_rows.iloc[-1]
             # Append the watt value from powerplug_subset to powerplug in rapl
-            rapl.at[i, 'powerplug'] = last_matching_row['watt']
+            rapl.at[i, 'powerplug'] = last_matching_row['power_W']
 
     return rapl
 
