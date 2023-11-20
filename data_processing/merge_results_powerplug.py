@@ -11,14 +11,14 @@ def merge_dataframes(rapl, powerplug):
     # (prevents iterating through the whole dataframe for each rapl file)
     rapl_min_time = rapl['timestamp'].min()-1
     rapl_max_time = rapl['timestamp'].max()+1
-    powerplug_subset = powerplug[(powerplug['timestamp'] >= rapl_min_time) & (powerplug['timestamp'] <= rapl_max_time)]
+    powerplug_subset = powerplug.loc[(powerplug['timestamp'] >= rapl_min_time) & (powerplug['timestamp'] <= rapl_max_time)]
 
 
     # Iterate over each row in rapl
     for i, row_r in rapl.iterrows():
         # Find the matching row in powerplug_subset
         # Get the latest row in powerplug_subset where the timestamp is less than or equal to the timestamp in rapl
-        matching_p_rows = powerplug_subset[powerplug_subset['timestamp'] <= row_r['timestamp']]
+        matching_p_rows = powerplug_subset.loc[(powerplug_subset['timestamp'] <= row_r['timestamp'])]
 
         if not matching_p_rows.empty:
             # Get the last matching row as it's the closest to the current timestamp in rapl
