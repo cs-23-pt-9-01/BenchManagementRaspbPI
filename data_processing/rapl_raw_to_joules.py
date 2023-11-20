@@ -27,9 +27,10 @@ def process_df(raw_df, units):
                             "PP1End", "PkgStart", "PkgEnd", 
                             "DramStart", "DramEnd"]].apply(mult, args=([energy_unit]), axis=1)
 
-    time_values = raw_df[["TimeStart", "TimeEnd"]].apply(mult, args=([time_unit]), axis=1)
+    time_values = raw_df[["TimeStart", "TimeEnd"]]
     # Subtract end from start values to obtain energy use from benchmark
     converted_df = pd.DataFrame({
+        "timestamp" : time_values['TimeStart'],
         'Time': time_values["TimeEnd"] - time_values["TimeStart"],
         'PP0': energy_values["PP0End"] - energy_values["PP0Start"],
         'PP1': energy_values["PP1End"] - energy_values["PP1Start"],
