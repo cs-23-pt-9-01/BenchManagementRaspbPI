@@ -20,7 +20,6 @@ def mult(x, b):
 def process_df(raw_df, units):
     # Compute energy units from esu
     energy_unit = math.pow(0.5, ((units >> 8) &0x1f))
-    time_unit = math.pow(0.5, ((units >> 16) &0x1f))
 
     # Apply energy unit factor to energy counter data --> new values are in joules
     energy_values = raw_df[["PP0End", "PP0Start", "PP1Start", 
@@ -31,6 +30,7 @@ def process_df(raw_df, units):
     # Subtract end from start values to obtain energy use from benchmark
     converted_df = pd.DataFrame({
         "timestamp" : time_values['TimeStart'],
+        "DeltaTime" : time_values['TimeEnd'] - time_values['TimeStart'],
         'Time': time_values["TimeEnd"] - time_values["TimeStart"],
         'PP0': energy_values["PP0End"] - energy_values["PP0Start"],
         'PP1': energy_values["PP1End"] - energy_values["PP1Start"],
